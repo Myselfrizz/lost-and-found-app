@@ -72,7 +72,6 @@ class _MyHomePageState extends State<MyHomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Image
-              if (imageUrl != null && imageUrl.isNotEmpty)
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: CachedNetworkImage(
@@ -80,6 +79,21 @@ class _MyHomePageState extends State<MyHomePage> {
                     width: 100,
                     height: 100,
                     fit: BoxFit.cover,
+                    placeholder: (context, url) => Container(
+                      width: 100,
+                      height: 100,
+                      color: Colors.grey.shade300,
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
+                    errorWidget: (context, url, error) {
+                      print("IMAGE LOAD ERROR: $error");
+                      return Container(
+                        width: 100,
+                        height: 100,
+                        color: Colors.grey.shade300,
+                        child: Icon(Icons.broken_image),
+                      );
+                    },
                   ),
                 ),
 
@@ -230,9 +244,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
-  print(snapshot.error);
-  return Center(child: Text("Error: ${snapshot.error}"));
-}
+                  print(snapshot.error);
+                  return Center(child: Text("Error: ${snapshot.error}"));
+                }
 
                 final items = snapshot.data!.docs;
 

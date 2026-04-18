@@ -101,29 +101,30 @@ class _AddItemPageState extends State<AddItemPage> {
   }
 
   //  Upload Image
-  Future<String?> uploadImage() async {
-    if (_image == null) return null;
+Future<String?> uploadImage() async {
+  if (_image == null) return null;
 
-    try {
-      final fileName = DateTime.now().millisecondsSinceEpoch.toString();
+  try {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    final fileName = DateTime.now().millisecondsSinceEpoch.toString();
 
-      final ref = FirebaseStorage.instance
-          .ref()
-          .child('items_images')
-          .child(fileName);
+    final ref = FirebaseStorage.instance
+        .ref()
+        .child('user_uploads/$uid/$fileName.jpg');
 
-      await ref.putFile(_image!);
+    print("UPLOAD PATH: user_uploads/$uid/$fileName.jpg");
 
-      final url = await ref.getDownloadURL();
-      print("IMAGE UPLOADED: $url");
+    await ref.putFile(_image!);
 
-      return url;
-    } catch (e) {
-      print("UPLOAD ERROR: $e");
-      return null;
-    }
+    final url = await ref.getDownloadURL();
+    print("IMAGE UPLOADED: $url");
+
+    return url;
+  } catch (e) {
+    print("UPLOAD ERROR: $e");
+    return null;
   }
-
+}
   //  Submit Item
   Future<void> submitItem() async {
   if (!_formKey.currentState!.validate()) return;

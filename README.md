@@ -1,16 +1,33 @@
-# lost_found_app
+# Lost & Found Community App
 
-A new Flutter project.
+A full-stack Flutter app for managing lost and found items, featuring image uploads, real-time data with Firebase, user authentication, and location-based tracking.
 
-## Getting Started
+## 🚀 Features
+- Post lost and found items
+- Upload item images
+- Location selection (map integration)
+- Real-time updates using Firebase
+- User authentication
 
-This project is a starting point for a Flutter application.
+## 🛠 Tech Stack
+- Flutter (Dart)
+- Firebase Auth
+- Cloud Firestore
+- Firebase Storage
+- Google Maps API
 
-A few resources to get you started if this is your first Flutter project:
+## 📱 Screens
+- Home (Lost / Found tabs)
+- Add Item
+- Item Details
+- My Posts
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## ⚙️ Setup Instructions
+1. Clone the repo
+2. Run `flutter pub get`
+3. Add your Firebase config files:
+   - android/app/google-services.json
+4. Run the app
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 📌 Note
+Make sure Firebase is properly configured before running the app.
