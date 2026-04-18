@@ -38,7 +38,7 @@ A Flutter-based mobile application that allows users to report and discover lost
 ## Setup
 
 1. Clone the repository  
-   `git clone https://github.com/myselfrizz/lost-and-found-app.git`
+   `git clone https://github.com/Myselfrizz/lost-and-found-app.git`
 
 2. Install dependencies  
    `flutter pub get`
