@@ -1,38 +1,72 @@
-<<<<<<< HEAD
 # Lost & Found Community App
 
-A full-stack Flutter app for managing lost and found items, featuring image uploads, real-time data with Firebase, user authentication, and location-based tracking.
+A Flutter-based mobile application that allows users to report and discover lost or found items within a community. The app uses Firebase for authentication, real-time data storage, and image handling, along with location-based input for better tracking.
 
-🚀 Features
-- Post lost and found items
+---
+
+## Features
+
+- Create posts for lost or found items
 - Upload item images
-- Location selection (map integration)
-- Real-time updates using Firebase
+- Add location manually or via map
+- Real-time feed using Firebase Firestore
 - User authentication
+- View and manage personal posts
 
- 🛠 Tech Stack
+---
+
+## Tech Stack
+
 - Flutter (Dart)
-- Firebase Auth
+- Firebase Authentication
 - Cloud Firestore
 - Firebase Storage
-- Google Maps API
+- Google Maps / Geolocation
 
-📱 Screens
-- Home (Lost / Found tabs)
-- Add Item
-- Item Details
-- My Posts
+---
 
- ⚙️ Setup Instructions
-1. Clone the repo
-2. Run `flutter pub get`
-3. Add your Firebase config files:
-   - android/app/google-services.json
-4. Run the app
+## How It Works
 
-📌 Note
-Make sure Firebase is properly configured before running the app.
-=======
-# lost-and-found-app
-A full-stack Flutter app for managing lost and found items, featuring image uploads, real-time data with Firebase, user authentication, and location-based tracking.
->>>>>>> 173dda83900876965cd4b5513162bdd78095b239
+1. User logs in
+2. Creates a post (lost or found)
+3. Image is uploaded to Firebase Storage
+4. Data is stored in Firestore
+5. Feed updates in real time
+
+---
+
+## Setup
+
+1. Clone the repository  
+   `git clone https://github.com/your-username/lost-and-found-app.git`
+
+2. Install dependencies  
+   `flutter pub get`
+
+3. Add Firebase configuration  
+   - Place `google-services.json` in `android/app/`
+
+4. Run the app  
+   `flutter run`
+
+---
+
+## Notes
+
+- Firebase must be configured before running
+- Security rules should be properly set for Firestore and Storage
+- API keys should be restricted
+
+---
+
+## Limitations
+
+- No search/filter functionality yet
+- No messaging between users
+- No notifications
+
+---
+
+## Author
+
+Rizwan
