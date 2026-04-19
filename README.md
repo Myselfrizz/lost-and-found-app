@@ -25,6 +25,7 @@ Flutter-based lost and found app with Firebase backend, real-time feed, image up
 </p>
 <p align="center"><sub>Login / Signup</sub></p>
 ---
+
 ## Run Locally
 
 **Prerequisites**
@@ -79,6 +80,7 @@ lib/
 ├── firebase_options.dart       # Auto-generated Firebase config
 ├── main.dart                   # App entry point
 └── theme.dart                  # App-wide styling and colors
+```
 
 ## Documentation
 
@@ -156,15 +158,13 @@ Note:
 - Enable installation from unknown sources on the device before installing
 - This method is intended for testing and manual distribution
 ---
-## Limitations & Future Scope
+### Limitations & Future Scope
 
-While the core functionality of the app is stable, there are a few limitations and areas planned for future development:
-
-* **Image Compression:** Currently, images are uploaded to Firebase Storage in their original size. In the future, client-side image compression (e.g., using `flutter_image_compress`) will be implemented to reduce bandwidth and storage costs.
-* **Full-Text Search:** Firestore has limited native capabilities for complex string matching. Searching for items is currently limited to basic category/type filtering. Integrating a third-party service like Algolia or Typesense is planned for robust keyword searching.
-* **Push Notifications:** Users must manually check the feed to see if their lost item has been found. Integrating Firebase Cloud Messaging (FCM) to notify users when a potential match is posted nearby is a future goal.
-* **Offline Caching:** The app currently requires an active internet connection to load the feed. Implementing local caching mechanisms (like SQLite or Hive) would allow users to view previously loaded items while offline.
-* **Map API Quotas:** The map and location picker features rely on mapping APIs, which may have usage limits on the free tier.
+* **Image Compression:** Implement client-side compression (e.g., `flutter_image_compress`) before uploading to optimize Firebase Storage costs.
+* **Advanced Search:** Integrate third-party tools like Algolia to bypass Firestore's basic search limits and enable full-text keyword searches.
+* **Push Notifications:** Add Firebase Cloud Messaging (FCM) to instantly alert users about potential item matches instead of requiring manual feed refreshes.
+* **Offline Support:** Implement local caching (via SQLite or Hive) so users can browse previously loaded items without an active internet connection.
+* **Map Quotas:** Monitor and optimize map API requests to ensure the app stays within free-tier usage limits.
 ---
 
 ## Support
