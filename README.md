@@ -6,17 +6,24 @@ Flutter-based lost and found app with Firebase backend, real-time feed, image up
 ## Screenshots
 
 ### Feed
-| Lost | Found |
-|------|-------|
-| ![](assets/screenshots/lost_tab.jpeg) | ![](assets/screenshots/found_tab.jpeg) |
+<p align="center">
+  <img src="assets/screenshots/lost_tab.jpeg" width="180"/>
+  <img src="assets/screenshots/found_tab.jpeg" width="180"/>
+</p>
+<p align="center"><sub>Lost Items | Found Items</sub></p>
 
 ### Actions
-| Report Item | My Posts |
-|------------|----------|
-| ![](assets/screenshots/report_item.jpeg) | ![](assets/screenshots/my_posts.jpeg) |
+<p align="center">
+  <img src="assets/screenshots/report_item.jpeg" width="180"/>
+  <img src="assets/screenshots/my_posts.jpeg" width="180"/>
+</p>
+<p align="center"><sub>Report Item | My Posts</sub></p>
 
 ### Authentication
-![Login](assets/screenshots/login_and_signUp.jpeg)
+<p align="center">
+  <img src="assets/screenshots/login_and_signUp.jpeg" width="180"/>
+</p>
+<p align="center"><sub>Login / Signup</sub></p>
 
 ---
 ## Run Locally
