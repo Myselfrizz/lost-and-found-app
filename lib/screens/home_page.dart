@@ -76,8 +76,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 borderRadius: BorderRadius.circular(10),
                 child: CachedNetworkImage(
                   imageUrl: imageUrl ?? '',
-                  width: 100,
-                  height: 100,
+                  width: 110,
+                  height: 110,
                   fit: BoxFit.cover,
                   placeholder: (context, url) => Container(
                     width: 100,
@@ -110,28 +110,29 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: Text(
                             data['title'] ?? '',
                             style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
                         const SizedBox(width: 6),
                         Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 10,
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
                             color: type == 'lost'
-                                ? Colors.red.shade100
-                                : Colors.green.shade100,
-                            borderRadius: BorderRadius.circular(8),
+                                ? Colors.red.withOpacity(0.1)
+                                : Colors.green.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(
                             type.toUpperCase(),
                             style: TextStyle(
                               fontSize: 12,
+                              fontWeight: FontWeight.w600,
                               color: type == 'lost' ? Colors.red : Colors.green,
                             ),
                           ),
@@ -295,7 +296,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 final items = snapshot.data!.docs;
 
                 if (items.isEmpty) {
-                  return const Center(child: Text("No items yet"));
+                  return const Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.search_off, size: 60, color: Colors.grey),
+                      SizedBox(height: 10),
+                      Text("No items found"),
+                    ],
+                  );
                 }
 
                 return ListView.builder(

@@ -71,6 +71,19 @@ class ItemDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final sectionTitle = TextStyle(
+      fontSize: 13,
+      fontWeight: FontWeight.w600,
+      color: Colors.grey[600],
+    );
+
+    final mainText = TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w500,
+      color: Colors.black87,
+    );
+
+    final lightText = TextStyle(fontSize: 13, color: Colors.grey[600]);
     return Scaffold(
       appBar: AppBar(title: Text(title)),
       body: SingleChildScrollView(
@@ -79,11 +92,9 @@ class ItemDetailPage extends StatelessWidget {
           children: [
             // IMAGE
             if (imageUrl != null && imageUrl!.isNotEmpty)
-              Image.network(
-                imageUrl!,
-                width: double.infinity,
-                height: 220,
-                fit: BoxFit.cover,
+              AspectRatio(
+                aspectRatio: 3 / 4,
+                child: Image.network(imageUrl!, fit: BoxFit.cover),
               ),
 
             Padding(
@@ -93,68 +104,106 @@ class ItemDetailPage extends StatelessWidget {
                 children: [
                   // TYPE
                   Text(
-                    type.toUpperCase(),
-                    style: TextStyle(
-                      color: type == 'lost' ? Colors.red : Colors.green,
-                      fontWeight: FontWeight.bold,
+                    title,
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+
+                  SizedBox(height: 12),
+
+                  // TYPE BADGE (you already have container → keep or replace)
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: type == 'lost'
+                          ? Colors.red.withOpacity(0.1)
+                          : Colors.green.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      type.toUpperCase(),
+                      style: TextStyle(
+                        color: type == 'lost' ? Colors.red : Colors.green,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
 
-                  const SizedBox(height: 10),
+                  SizedBox(height: 20),
 
                   // DESCRIPTION
-                  Text(description),
+                  Text("Description", style: sectionTitle),
+                  SizedBox(height: 6),
+                  Text(description, style: mainText),
 
-                  const SizedBox(height: 10),
+                  SizedBox(height: 20),
 
                   // LOCATION
-                  Text("Location: $location"),
+                  Text("Location", style: sectionTitle),
+                  SizedBox(height: 6),
+                  Row(
+                    children: [
+                      Icon(Icons.location_on, size: 16, color: Colors.grey),
+                      SizedBox(width: 4),
+                      Expanded(child: Text(location, style: mainText)),
+                    ],
+                  ),
 
-                  const SizedBox(height: 10),
+                  SizedBox(height: 20),
 
-                  const SizedBox(height: 6),
-
+                  // TIME
                   Row(
                     children: [
                       Icon(Icons.access_time, size: 14, color: Colors.grey),
                       SizedBox(width: 4),
-                      Text(
-                        "Posted: ${formatTime(timestamp)}",
-                        style: TextStyle(color: Colors.grey, fontSize: 12),
-                      ),
+                      Text(formatTime(timestamp), style: lightText),
                     ],
                   ),
 
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20),
+
                   // CONTACT
+                  Text("Contact", style: sectionTitle),
+                  SizedBox(height: 6),
                   Text(
-                    contact.isEmpty
-                        ? "No contact available"
-                        : "Contact : $contact",
+                    contact.isEmpty ? "No contact available" : contact,
+                    style: mainText,
                   ),
 
+                  SizedBox(height: 20),
                   const SizedBox(height: 20),
 
                   // BUTTONS
-                  Row(
+                  Column(
                     children: [
-                      ElevatedButton(
-                        onPressed: contact.isEmpty
-                            ? null
-                            : () => _call(contact),
-                        child: const Text("Call"),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: contact.isEmpty
+                              ? null
+                              : () => _call(contact),
+                          icon: Icon(Icons.call),
+                          label: Text("Call"),
+                        ),
                       ),
-                      const SizedBox(width: 10),
-                      ElevatedButton(
-                        onPressed: contact.isEmpty
-                            ? null
-                            : () => _whatsapp(contact),
-                        child: const Text("WhatsApp"),
+                      SizedBox(height: 10),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: contact.isEmpty
+                              ? null
+                              : () => _whatsapp(contact),
+                          icon: Icon(Icons.message),
+                          label: Text("WhatsApp"),
+                        ),
                       ),
-                      const SizedBox(width: 10),
-                      ElevatedButton(
-                        onPressed: () => _navigate(lat, lng),
-                        child: const Text("Navigate"),
+                      SizedBox(height: 10),
+                      SizedBox(
+                        width: double.infinity,
+                        child: OutlinedButton.icon(
+                          onPressed: () => _navigate(lat, lng),
+                          icon: Icon(Icons.navigation),
+                          label: Text("Navigate"),
+                        ),
                       ),
                     ],
                   ),
