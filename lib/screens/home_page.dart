@@ -72,30 +72,30 @@ class _MyHomePageState extends State<MyHomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Image
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: CachedNetworkImage(
-                    imageUrl: imageUrl ?? '',
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: CachedNetworkImage(
+                  imageUrl: imageUrl ?? '',
+                  width: 100,
+                  height: 100,
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => Container(
                     width: 100,
                     height: 100,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => Container(
+                    color: Colors.grey.shade300,
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
+                  errorWidget: (context, url, error) {
+                    print("IMAGE LOAD ERROR: $error");
+                    return Container(
                       width: 100,
                       height: 100,
                       color: Colors.grey.shade300,
-                      child: Center(child: CircularProgressIndicator()),
-                    ),
-                    errorWidget: (context, url, error) {
-                      print("IMAGE LOAD ERROR: $error");
-                      return Container(
-                        width: 100,
-                        height: 100,
-                        color: Colors.grey.shade300,
-                        child: Icon(Icons.broken_image),
-                      );
-                    },
-                  ),
+                      child: Icon(Icons.broken_image),
+                    );
+                  },
                 ),
+              ),
 
               const SizedBox(width: 10),
 
@@ -244,8 +244,15 @@ class _MyHomePageState extends State<MyHomePage> {
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
-                  print(snapshot.error);
                   return Center(child: Text("Error: ${snapshot.error}"));
+                }
+
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                }
+
+                if (!snapshot.hasData) {
+                  return Center(child: Text("No data"));
                 }
 
                 final items = snapshot.data!.docs;
@@ -273,8 +280,16 @@ class _MyHomePageState extends State<MyHomePage> {
                   return Center(child: Text("Something went wrong"));
                 }
 
+                if (snapshot.hasError) {
+                  return Center(child: Text("Something went wrong"));
+                }
+
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
+                }
+
+                if (!snapshot.hasData) {
+                  return const Center(child: Text("No data"));
                 }
 
                 final items = snapshot.data!.docs;

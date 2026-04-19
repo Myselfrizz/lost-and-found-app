@@ -101,110 +101,125 @@ class _AddItemPageState extends State<AddItemPage> {
   }
 
   //  Upload Image
-Future<String?> uploadImage() async {
-  if (_image == null) return null;
+  Future<String?> uploadImage() async {
+    if (_image == null) return null;
 
-  try {
-    final uid = FirebaseAuth.instance.currentUser!.uid;
-    final fileName = DateTime.now().millisecondsSinceEpoch.toString();
+    try {
+      final user = FirebaseAuth.instance.currentUser;
 
-    final ref = FirebaseStorage.instance
-        .ref()
-        .child('user_uploads/$uid/$fileName.jpg');
+      if (user == null) {
+        throw Exception("User not logged in");
+      }
 
-    print("UPLOAD PATH: user_uploads/$uid/$fileName.jpg");
+      final uid = user.uid;
+      final fileName = DateTime.now().millisecondsSinceEpoch.toString();
 
-    await ref.putFile(_image!);
+      final ref = FirebaseStorage.instance.ref().child(
+        'user_uploads/$uid/$fileName.jpg',
+      );
 
-    final url = await ref.getDownloadURL();
-    print("IMAGE UPLOADED: $url");
+      print("UPLOAD PATH: user_uploads/$uid/$fileName.jpg");
 
-    return url;
-  } catch (e) {
-    print("UPLOAD ERROR: $e");
-    return null;
+      await ref.putFile(_image!);
+
+      final url = await ref.getDownloadURL();
+      print("IMAGE UPLOADED: $url");
+
+      return url;
+    } catch (e) {
+      print("UPLOAD ERROR: $e");
+      return null;
+    }
   }
-}
+
   //  Submit Item
   Future<void> submitItem() async {
-  if (!_formKey.currentState!.validate()) return;
+    if (!_formKey.currentState!.validate()) return;
 
- if (locationController.text.trim().isEmpty) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(content: Text("Please enter or select location")),
-  );
-  return;
-}
-
-  if (_image == null && widget.docId == null) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Please select an image")),
-    );
-    return;
-  }
-
-  setState(() => isLoading = true);
-
-  try {
-    String? imageUrl;
-
-    if (_image != null) {
-      imageUrl = await uploadImage();
-    } else if (widget.existingData != null) {
-      imageUrl = widget.existingData!['imageUrl'];
+    if (locationController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Please enter or select location")),
+      );
+      return;
     }
 
-    final data = {
-      'title': titleController.text,
-      'location': locationController.text,
-      'lat': selectedLat,
-      'lng': selectedLng,
-      'description': descController.text,
-      'type': isLost ? 'lost' : 'found',
-      'contact': contactController.text.trim(),
-      'imageUrl': imageUrl,
-    };
+    if (_image == null && widget.docId == null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Please select an image")));
+      return;
+    }
 
-    if (widget.docId != null) {
-      // EDIT MODE
-      final docRef = FirebaseFirestore.instance
-          .collection('items')
-          .doc(widget.docId);
+    setState(() => isLoading = true);
 
-      final docSnap = await docRef.get();
+    try {
+      String? imageUrl;
 
-      if (!docSnap.exists) {
-        // fallback if deleted
+      if (_image != null) {
+        imageUrl = await uploadImage();
+      } else if (widget.existingData != null) {
+        imageUrl = widget.existingData!['imageUrl'];
+      }
+
+      final data = {
+        'title': titleController.text,
+        'location': locationController.text,
+        'lat': selectedLat,
+        'lng': selectedLng,
+        'description': descController.text,
+        'type': isLost ? 'lost' : 'found',
+        'contact': contactController.text.trim(),
+        'imageUrl': imageUrl,
+      };
+      final user = FirebaseAuth.instance.currentUser;
+
+      if (user == null) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("User not logged in")));
+        return;
+      }
+
+      if (widget.docId != null) {
+        // EDIT MODE
+        final docRef = FirebaseFirestore.instance
+            .collection('items')
+            .doc(widget.docId);
+
+        final docSnap = await docRef.get();
+
+        if (!docSnap.exists) {
+          // fallback → create new
+          await FirebaseFirestore.instance.collection('items').add({
+            ...data,
+            'createdAt': DateTime.now(),
+            'userId': user.uid,
+          });
+        } else {
+          await docRef.update({
+            ...data,
+            'updatedAt': FieldValue.serverTimestamp(),
+          });
+        }
+      } else {
+        // NEW POST
         await FirebaseFirestore.instance.collection('items').add({
           ...data,
           'createdAt': DateTime.now(),
-          'userId': FirebaseAuth.instance.currentUser!.uid,
-        });
-      } else {
-        await docRef.update({
-          ...data,
-          'updatedAt': FieldValue.serverTimestamp(),
+          'userId': user.uid,
         });
       }
-    } else {
-      //  NEW POST
-      await FirebaseFirestore.instance.collection('items').add({
-        ...data,
-        'createdAt': DateTime.now(),
-        'userId': FirebaseAuth.instance.currentUser!.uid,
-      });
-    }
 
-    Navigator.pop(context);
-  } catch (e) {
-    print("ERROR: $e");
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Error: $e")),
-    );
-  } finally {
-    setState(() => isLoading = false);
+      Navigator.pop(context);
+    } catch (e) {
+      print("ERROR: $e");
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Error: $e")));
+    } finally {
+      setState(() => isLoading = false);
+    }
   }
-}
 
   @override
   void dispose() {
