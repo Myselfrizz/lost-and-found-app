@@ -1,72 +1,129 @@
+
 # Lost & Found Community App
 
-A Flutter-based mobile application that allows users to report and discover lost or found items within a community. The app uses Firebase for authentication, real-time data storage, and image handling, along with location-based input for better tracking.
+Flutter-based lost and found app with Firebase backend, real-time feed, image uploads, and location support.
+
+## Screenshots
+
+### Feed
+| Lost | Found |
+|------|-------|
+| ![](assets/screenshots/lost_tab.jpeg) | ![](assets/screenshots/found_tab.jpeg) |
+
+### Actions
+| Report Item | My Posts |
+|------------|----------|
+| ![](assets/screenshots/report_item.jpeg) | ![](assets/screenshots/my_posts.jpeg) |
+
+### Authentication
+![Login](assets/screenshots/login_and_signUp.jpeg)
+
+---
+## Run Locally
+
+Clone the repository:
+
+```bash
+git clone https://github.com/Myselfrizz/lost-and-found-app.git
+cd lost-and-found-app
+```
+
+Install dependencies
+
+```bash
+ flutter pub get
+```
+Configure Firebase:
+- Create a Firebase project
+- Add `google-services.json`:
+```
+  android/app/
+```
+Run the App:
+
+```bash
+  flutter run
+```
+
+
+## Documentation
+
+### Overview
+
+This application enables users to report and browse lost or found items using a real-time backend powered by Firebase.
 
 ---
 
-## Features
+### Core Components
 
-- Create posts for lost or found items
-- Upload item images
-- Add location manually or via map
-- Real-time feed using Firebase Firestore
-- User authentication
-- View and manage personal posts
+- **Authentication**
+  - Firebase Authentication is used to identify users
+  - Each post is associated with a `userId`
+
+- **Firestore (Database)**
+  - Collection: `items`
+  - Stores item details (title, description, location, image URL, etc.)
+  - Real-time updates via Firestore streams
+
+- **Firebase Storage**
+  - Stores uploaded images
+  - Path structure:
+    ```
+    user_uploads/{userId}/{timestamp}.jpg
+    ```
+
+- **Feed System**
+  - Built using `StreamBuilder`
+  - Listens to Firestore updates in real time
+  - Filters items by type (`lost` / `found`)
 
 ---
 
-## Tech Stack
+### Data Flow
 
-- Flutter (Dart)
-- Firebase Authentication
-- Cloud Firestore
-- Firebase Storage
-- Google Maps / Geolocation
-
----
-
-## How It Works
-
-1. User logs in
-2. Creates a post (lost or found)
+1. User authenticates
+2. User selects an image and enters item details
 3. Image is uploaded to Firebase Storage
-4. Data is stored in Firestore
-5. Feed updates in real time
+4. Download URL is generated
+5. Data is stored in Firestore
+6. Feed updates automatically via stream
 
 ---
 
-## Setup
+### Error Handling
 
-1. Clone the repository  
-   `git clone https://github.com/Myselfrizz/lost-and-found-app.git`
-
-2. Install dependencies  
-   `flutter pub get`
-
-3. Add Firebase configuration  
-   - Place `google-services.json` in `android/app/`
-
-4. Run the app  
-   `flutter run`
+- Image loading errors handled with fallback UI
+- Null or invalid data safely handled in UI components
 
 ---
 
-## Notes
+### Security
 
-- Firebase must be configured before running
-- Security rules should be properly set for Firestore and Storage
-- API keys should be restricted
-
+- Authentication required for database and storage access
+- Storage scoped per user (`user_uploads/{userId}`)
+- API keys restricted via Google Cloud Console
 ---
+## Deployment
 
-## Limitations
+Build a release APK:
 
-- No search/filter functionality yet
-- No messaging between users
-- No notifications
+```bash
+flutter build apk --release
+```
 
+
+The generated file will be available at:
+```
+build/app/outputs/flutter-apk/app-release.apk
+```
+
+Download APK:
+
+https://drive.google.com/file/d/1E-YPfwGTG1FKawLk3EOevZZ7pIY32jae/view
+
+Note:
+- Enable installation from unknown sources on the device before installing
+- This method is intended for testing and manual distribution
 ---
-
-## Author
-
-Rizwan
+## Support
+If you find any issues or have suggestions, feel free to open an issue or submit a pull request.
