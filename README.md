@@ -24,7 +24,7 @@ Flutter-based lost and found app with Firebase backend, real-time feed, image up
   <img src="assets/screenshots/login_and_signUp.jpeg" width="100"/>
 </p>
 <p align="center"><sub>Login / Signup</sub></p>
----
+
 
 ## Run Locally
 
